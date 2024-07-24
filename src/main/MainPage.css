@@ -1,0 +1,17 @@
+#header {
+  display: "flex";
+  align-items: "center";
+}
+
+#footer {
+  text-align: center;
+}
+
+.button_div {
+  float: right;
+}
+
+.button {
+  margin-left: 5px;
+  border: solid 1px gray;
+}
