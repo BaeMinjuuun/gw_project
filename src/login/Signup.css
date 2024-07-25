@@ -3,3 +3,16 @@
   margin: 0 auto;
   margin-top: 50px;
 }
+
+.formItemFlex {
+  display: flex;
+  align-items: center;
+}
+
+.formItemFlex .ant-input {
+  flex: 1;
+}
+
+.formItemFlex .ant-btn {
+  margin-left: 10px;
+}
