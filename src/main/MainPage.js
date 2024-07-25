@@ -9,6 +9,7 @@ import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme, Button } from "antd";
 import { Outlet, Link } from "react-router-dom";
 import "./MainPage.css";
+import { API_URL } from "../config/constants";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -47,10 +48,11 @@ const MainPage = () => {
   const [users, setUsers] = React.useState([]);
   React.useEffect(() => {
     axios
-      .get("http://localhost:8080/users")
+      .get(`${API_URL}/users`)
       .then((result) => {
         const users = result.data.users;
         setUsers(users);
+        console.log(users);
       })
       .catch((error) => {
         console.error("에러 발생 : ", error);
