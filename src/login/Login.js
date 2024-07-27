@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input, Button, message } from "antd";
 import axios from "axios";
 import { API_URL } from "../config/constants";
+import "./Login.css";
 
 const Login = () => {
   const [userId, setUserId] = useState("");
@@ -37,8 +38,8 @@ const Login = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault(); 
-      handleLogin();
+      e.preventDefault(); // Prevent default action of form submission
+      handleLogin(); // Call the login handler
     }
   };
 
@@ -55,10 +56,9 @@ const Login = () => {
         placeholder="비밀번호"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        style={{ marginBottom: "20px" }}
         onKeyDown={handleKeyDown}
       />
-      <Button type="primary" onClick={handleLogin}>
+      <Button className="loginBtn" type="primary" onClick={handleLogin}>
         로그인
       </Button>
     </div>
