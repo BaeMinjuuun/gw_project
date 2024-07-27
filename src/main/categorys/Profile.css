@@ -1,0 +1,32 @@
+.tableContainer {
+  margin-left: 50px;
+}
+
+.tableContainer .ant-table {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+}
+
+.tableContainer .ant-table-tbody {
+  display: flex;
+  flex-direction: column;
+}
+
+.tableContainer .ant-table-tbody > tr {
+  display: flex;
+  flex-direction: row;
+}
+
+.tableContainer .ant-table-tbody > tr > td {
+  flex: 1;
+  padding: 8px;
+}
+
+.tableContainer h1 {
+  margin-bottom: 20px;
+}
+
+.updateBtn {
+  margin-top: 10px;
+}

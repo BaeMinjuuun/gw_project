@@ -1,63 +1,34 @@
-import React from "react";
-import axios from "axios";
-import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu, theme, Button } from "antd";
-import { Outlet, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Breadcrumb, Layout, Menu, theme, Button, message } from "antd";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import "./MainPage.css";
-import { API_URL } from "../config/constants";
+import items1 from "./navBars/NavBar";
+import items2 from "./categorys/Category";
 
 const { Header, Content, Footer, Sider } = Layout;
-
-const items1: MenuProps["items"] = ["1", "2", "3"].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
-
-const items2: MenuProps["items"] = [
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-].map((icon, index) => {
-  const key = String(index + 1);
-
-  return {
-    key: `sub${key}`,
-    icon: React.createElement(icon),
-    label: `subnav ${key}`,
-
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  };
-});
 
 const MainPage = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const [users, setUsers] = React.useState([]);
-  React.useEffect(() => {
-    axios
-      .get(`${API_URL}/users`)
-      .then((result) => {
-        const users = result.data.users;
-        setUsers(users);
-        console.log(users);
-      })
-      .catch((error) => {
-        console.error("에러 발생 : ", error);
-      });
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
   }, []);
+
+  // 로그아웃
+  const handleLogout = () => {
+    localStorage.removeItem("user"); // 로컬 스토리지에서 사용자 정보 삭제
+    setUser(null);
+    message.success("로그아웃 되었습니다.");
+    navigate("/");
+  };
 
   return (
     <Layout>
@@ -71,12 +42,24 @@ const MainPage = () => {
             style={{ flex: 1, minWidth: 0 }}
           />
           <div className="button_div">
-            <Link to={"/login"}>
-              <Button className="button">로그인</Button>
-            </Link>
-            <Link to={"/signup"}>
-              <Button className="button">회원가입</Button>
-            </Link>
+            {user ? (
+              <div>
+                {user.name}님 로그인중...
+                <Button className="logOutBtn" onClick={handleLogout}>
+                  로그아웃
+                </Button>
+              </div>
+            ) : (
+              <div>
+                사용자 정보가 없습니다. 로그인 해주세요.
+                <Link to={"/login"}>
+                  <Button className="button">로그인</Button>
+                </Link>
+                <Link to={"/signup"}>
+                  <Button className="button">회원가입</Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </Header>
