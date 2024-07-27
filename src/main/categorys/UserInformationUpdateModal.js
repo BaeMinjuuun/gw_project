@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../../reducer/modalSlice";
 import "./ModalOpen.css";
 
-const ModalOpen = () => {
+const UserInformationUpdateModal = () => {
+  const [form] = Form.useForm();
   const isModalOpen = useSelector((state) => state.modal.isModalOpen);
   const dispatch = useDispatch();
 
@@ -42,6 +43,7 @@ const ModalOpen = () => {
   const { Text } = Typography;
 
   const handleOk = () => {
+    form.submit();
     dispatch(closeModal());
   };
 
@@ -74,6 +76,11 @@ const ModalOpen = () => {
     setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
+  // 여기서부터**** 변경 요청된 정보 업데이트 하기!!!!
+  const onSubmit = (values) => {
+    alert(values.new_user_id);
+  };
+
   return (
     <Modal
       title="개인정보 수정"
@@ -82,7 +89,7 @@ const ModalOpen = () => {
       onCancel={handleCancel}
       okButtonProps={{ disabled: !isFormChanged }}
     >
-      <Form>
+      <Form onFinish={onSubmit} form={form}>
         <Form.Item label="아이디" name="user_id">
           <Text className="formText">{name}</Text>
           <Button
@@ -156,4 +163,4 @@ const ModalOpen = () => {
   );
 };
 
-export default ModalOpen;
+export default UserInformationUpdateModal;

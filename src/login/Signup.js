@@ -105,7 +105,6 @@ const Signup = () => {
       email: values.email,
       birthday: values.birthday.format("YYYY-MM-DD"),
     };
-    console.log("userData : ", userData);
 
     axios
       .post(`${API_URL}/users`, userData)

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Table, Button } from "antd";
 import { useDispatch } from "react-redux";
 import "./Profile.css";
-import ModalOpen, { showModal } from "./ModalOpen";
+import ModalOpen, { showModal } from "./UserInformationUpdateModal";
 import { openModal } from "../../reducer/modalSlice";
 
 const columns = [
@@ -31,7 +31,7 @@ const Profile = () => {
   }, []);
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <div>로그인이 필요한 서비스 입니다.</div>;
   }
   const data = [
     { key: "1", item: "아이디", value: user.user_id },
