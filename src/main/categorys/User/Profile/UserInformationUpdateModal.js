@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal, Button, Form, Input, Typography, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { closeModal } from "../../reducer/modalSlice";
+import { closeModal } from "../../../../reducer/modalSlice";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "../../config/constants";
+import { API_URL } from "../../../../config/constants";
 import "./ModalOpen.css";
 
 const UserInformationUpdateModal = () => {

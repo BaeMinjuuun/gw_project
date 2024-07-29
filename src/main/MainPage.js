@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Layout, Menu, theme, Button, message } from "antd";
+import { Breadcrumb, Layout, Menu, theme, Button, message, Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import "./MainPage.css";
 import items1 from "./navBars/NavBar";
 import items2 from "./categorys/Category";
+import AttendanceMain from "./categorys/Attendance/AttendanceMain";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -37,6 +39,7 @@ const MainPage = () => {
           <div className="button_div">
             {user ? (
               <div>
+                <Avatar id="userImg" icon={<UserOutlined />} />
                 <span className="loginSpan">{user.name}님 로그인중...</span>
                 <Button className="logOutBtn" onClick={handleLogout}>
                   로그아웃
@@ -88,6 +91,7 @@ const MainPage = () => {
             />
           </Sider>
           <Content id="content" style={{ padding: "0 24px", minHeight: 280 }}>
+            <AttendanceMain />
             <Outlet />
           </Content>
         </Layout>
