@@ -6,3 +6,8 @@
   line-height: 2;
   font-size: 15px;
 }
+
+.formItemFlex {
+  display: flex;
+  align-items: center;
+}

@@ -34,24 +34,19 @@ const MainPage = () => {
     <Layout>
       <Header id="header">
         <div className="demo-logo">
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={["2"]}
-            items={items1}
-            style={{ flex: 1, minWidth: 0 }}
-          />
           <div className="button_div">
             {user ? (
               <div>
-                {user.name}님 로그인중...
+                <span className="loginSpan">{user.name}님 로그인중...</span>
                 <Button className="logOutBtn" onClick={handleLogout}>
                   로그아웃
                 </Button>
               </div>
             ) : (
               <div>
-                사용자 정보가 없습니다. 로그인 해주세요.
+                <span className="loginSpan">
+                  사용자 정보가 없습니다. 로그인 해주세요.
+                </span>
                 <Link to={"/login"}>
                   <Button className="button">로그인</Button>
                 </Link>
@@ -61,6 +56,13 @@ const MainPage = () => {
               </div>
             )}
           </div>
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={["2"]}
+            items={items1}
+            style={{ flex: 1, minWidth: 0 }}
+          />
         </div>
       </Header>
       <Content style={{ padding: "0 48px" }}>
