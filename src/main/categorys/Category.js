@@ -15,11 +15,11 @@ const items2: MenuProps["items"] = [
     children: [
       {
         key: "1",
-        label: <Link to="/profile">Profile</Link>,
+        label: <Link to="/profile">프로필</Link>,
       },
       {
         key: "2",
-        label: "Account",
+        label: <Link to="/attendance">출퇴근</Link>,
       },
       {
         key: "3",

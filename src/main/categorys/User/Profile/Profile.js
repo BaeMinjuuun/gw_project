@@ -3,7 +3,7 @@ import { Table, Button } from "antd";
 import { useDispatch } from "react-redux";
 import "./Profile.css";
 import ModalOpen, { showModal } from "./UserInformationUpdateModal";
-import { openModal } from "../../reducer/modalSlice";
+import { openModal } from "../../../../reducer/modalSlice";
 
 const columns = [
   {
