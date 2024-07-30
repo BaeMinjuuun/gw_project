@@ -1,10 +1,11 @@
 import type { MenuProps } from "antd";
+import { Link } from "react-router-dom";
 
 // items1: 상단 메뉴 항목
 const items1: MenuProps["items"] = [
   {
     key: "home",
-    label: "Home",
+    label: <Link to="/main">Home</Link>,
   },
   {
     key: "about",
