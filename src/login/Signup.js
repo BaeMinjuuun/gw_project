@@ -36,7 +36,7 @@ const Signup = () => {
   // 아이디 중복 검사
   const checkUserId = (userId) => {
     axios
-      .post(`${API_URL}/check-user-id`, { user_id: userId })
+      .post(`${API_URL}/users/check-user-id`, { user_id: userId })
       .then((response) => {
         message.success(response.data);
         setCheckId(true);
@@ -95,7 +95,7 @@ const Signup = () => {
       message.error("아이디 중복 검사를 먼저 수행해주세요.");
       return;
     }
-    // 서버로 보낼 데이터 준비
+    // 서버로 보낼 데이터
     const userData = {
       user_id: values.user_id,
       password: values.password,
@@ -107,7 +107,7 @@ const Signup = () => {
     };
 
     axios
-      .post(`${API_URL}/users`, userData)
+      .post(`${API_URL}/users/users`, userData)
       .then((result) => {
         console.log("회원가입 성공: ", result);
         message.success("회원가입이 성공적으로 완료되었습니다.");

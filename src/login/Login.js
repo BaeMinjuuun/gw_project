@@ -16,7 +16,7 @@ const Login = () => {
 
     // 로그인 요청
     axios
-      .post(`${API_URL}/login`, { user_id: userId, password })
+      .post(`${API_URL}/auth/login`, { user_id: userId, password })
       .then((result) => {
         message.success("로그인 성공!");
         console.log("RESULT DATA: ", result.data);

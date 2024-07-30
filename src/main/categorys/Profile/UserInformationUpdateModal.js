@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal, Button, Form, Input, Typography, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { closeModal } from "../../../../reducer/modalSlice";
+import { closeModal } from "../../../reducer/modalSlice";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "../../../../config/constants";
+import { API_URL } from "../../../config/constants";
 import "./ModalOpen.css";
 
 const UserInformationUpdateModal = () => {
@@ -90,7 +90,7 @@ const UserInformationUpdateModal = () => {
   // 아이디 중복 검사
   const checkUserId = (userId) => {
     axios
-      .post(`${API_URL}/check-user-id`, { user_id: userId })
+      .post(`${API_URL}/users/check-user-id`, { user_id: userId })
       .then((response) => {
         message.success(response.data);
         setIsUserIdValid(true);
@@ -125,7 +125,7 @@ const UserInformationUpdateModal = () => {
 
       // 아이디를 변경하려는 경우
       if (fields.user_id && new_user_id) {
-        const response = await fetch(`${API_URL}/updateUserId`, {
+        const response = await fetch(`${API_URL}/users/updateUserId`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -137,6 +137,7 @@ const UserInformationUpdateModal = () => {
 
         if (response.ok) {
           console.log("Update successful:", result);
+          window.location.href = "/";
         } else {
           console.error("Update failed:", result);
         }

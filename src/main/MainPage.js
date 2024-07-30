@@ -91,7 +91,6 @@ const MainPage = () => {
             />
           </Sider>
           <Content id="content" style={{ padding: "0 24px", minHeight: 280 }}>
-            <AttendanceMain />
             <Outlet />
           </Content>
         </Layout>

@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import MainPage from "./main/MainPage";
 import Signup from "./login/Signup.js";
 import Login from "./login/Login";
-import Profile from "./main/categorys/User/Profile/Profile";
-import AttendanceRecord from "./main/categorys/Attendance/AttendanceRecord";
+import Profile from "./main/categorys/Profile/Profile.js";
+import AttendanceMain from "./main/categorys/Attendance/AttendanceMain";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="attendance" element={AttendanceRecord} />
+          <Route path="/attendance" element={<AttendanceMain />} />
         </Route>
       </Routes>
     </div>
