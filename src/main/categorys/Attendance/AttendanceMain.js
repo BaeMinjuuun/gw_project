@@ -41,7 +41,7 @@ const AttendanceMain = () => {
     const currentDate = dayjs().format("YYYY-MM-DD");
 
     try {
-      const response = await axios.post(`${API_URL}/attendance/clockin`, {
+      const response = await axios.post(`${API_URL}/attendances/clockin`, {
         user_id: user.user_id,
         check_in_time: currentTime,
         date: currentDate,
@@ -74,7 +74,7 @@ const AttendanceMain = () => {
     const currentDate = dayjs().format("YYYY-MM-DD");
 
     try {
-      const response = await axios.post(`${API_URL}/attendance/clockout`, {
+      const response = await axios.post(`${API_URL}/attendances/clockout`, {
         user_id: user.user_id,
         check_out_time: currentTime,
         date: currentDate,
