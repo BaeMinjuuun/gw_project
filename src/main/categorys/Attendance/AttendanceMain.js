@@ -9,6 +9,8 @@ import "./AttendanceMain.css";
 const AttendanceMain = () => {
   const formattedTime = useRealTime();
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [attendance, setAttendance] = useState(null);
 
   const [data, setData] = useState([
     {
@@ -21,14 +23,51 @@ const AttendanceMain = () => {
   useEffect(() => {
     // 사용자 정보
     const storedUser = localStorage.getItem("user");
-
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+
+      // 사용자 ID가 있는지 확인
+      if (parsedUser.user_id) {
+        console.log("UserInfo.user_id => ", parsedUser.user_id); // 올바른 user_id 로그
+        axios
+          .get(`${API_URL}/attendances/getAttendance`, {
+            params: { user_id: parsedUser.user_id }, // 쿼리 파라미터로 user_id 전송
+          })
+          .then((response) => {
+            setAttendance(response.data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Error fetching attendance data:", error);
+            setLoading(false);
+            notification.error({
+              message: "출근 기록 조회 실패",
+              description: error.message,
+            });
+          });
+      } else {
+        setLoading(false);
+        notification.error({
+          message: "사용자 정보 오류",
+          description: "사용자 ID가 로컬 스토리지에 없습니다.",
+        });
+      }
+    } else {
+      setLoading(false);
+      notification.error({
+        message: "로그인 필요",
+        description: "로컬 스토리지에 사용자 정보가 없습니다.",
+      });
     }
   }, []);
 
   if (!user) {
     return <div>로그인이 필요한 서비스 입니다.</div>;
+  }
+
+  if (!attendance) {
+    return <p>출근 기록이 없습니다.</p>;
   }
 
   const getCurrentTime = () => {
@@ -106,14 +145,26 @@ const AttendanceMain = () => {
       title: "출근시간",
       dataIndex: "clockIn",
       key: "clockIn",
-      render: (time) => <div className="nowTime">{time}</div>, // 시간 포맷팅
+      render: (time) => (
+        <div className="nowTime">
+          {attendance.check_in_time
+            ? dayjs(attendance.check_in_time).format("HH:mm:ss")
+            : "미등록"}
+        </div>
+      ), // 시간 포맷팅
       className: "table-header-center",
     },
     {
       title: "퇴근시간",
       dataIndex: "clockOut",
       key: "clockOut",
-      render: (time) => <div className="nowTime">{time}</div>, // 시간 포맷팅
+      render: (time) => (
+        <div className="nowTime">
+          {attendance.check_out_time
+            ? dayjs(attendance.check_out_time).format("HH:mm:ss")
+            : "미등록"}
+        </div>
+      ), // 시간 포맷팅
       className: "table-header-center",
     },
   ];

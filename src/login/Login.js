@@ -25,7 +25,7 @@ const Login = () => {
         // 로컬 스토리지에 저장
         localStorage.setItem("token", token); // JWT 토큰 저장
         localStorage.setItem("user", JSON.stringify(user)); // 사용자 정보 저장
-        window.location.href = "/";
+        window.location.href = "/mainHome";
       })
       .catch((error) => {
         console.error(error);
@@ -38,8 +38,8 @@ const Login = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Prevent default action of form submission
-      handleLogin(); // Call the login handler
+      e.preventDefault();
+      handleLogin();
     }
   };
 

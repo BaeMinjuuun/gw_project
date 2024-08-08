@@ -40,6 +40,7 @@ const Profile = () => {
     { key: "4", item: "휴대폰번호", value: user.phone },
     { key: "5", item: "생년월일", value: user.birthday },
     { key: "6", item: "주소", value: user.address },
+    { key: "7", item: "부서", value: user.department },
   ];
 
   return (
