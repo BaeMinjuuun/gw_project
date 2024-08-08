@@ -1,0 +1,19 @@
+.profile {
+  max-width: 200px;
+  margin-top: 20px;
+  border-radius: 3%;
+  flex: 1;
+}
+
+.topPlace {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between; /* 양쪽으로 정렬 */
+  align-items: flex-start; /* 위쪽 정렬 */
+  margin-bottom: 20px;
+}
+
+.board {
+  margin-top: 20px;
+  flex: 2;
+}

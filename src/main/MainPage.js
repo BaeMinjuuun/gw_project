@@ -95,9 +95,7 @@ const MainPage = () => {
           </Content>
         </Layout>
       </Content>
-      <Footer id="footer">
-        Ant Design ©{new Date().getFullYear()} Created by Ant UED
-      </Footer>
+      <Footer id="footer"></Footer>
     </Layout>
   );
 };

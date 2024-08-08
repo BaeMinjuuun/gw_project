@@ -23,7 +23,7 @@ const items2: MenuProps["items"] = [
       },
       {
         key: "3",
-        label: "Notifications",
+        label: <Link to="/mainPostsBoard">게시판</Link>,
       },
       {
         key: "4",

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const items1: MenuProps["items"] = [
   {
     key: "home",
-    label: <Link to="/main">Home</Link>,
+    label: <Link to="/mainHome">Home</Link>,
   },
   {
     key: "about",

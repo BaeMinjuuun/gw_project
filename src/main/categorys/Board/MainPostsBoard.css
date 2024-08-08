@@ -1,0 +1,24 @@
+.ant-card {
+  border-radius: 8px;
+}
+
+.ant-card-body {
+  padding: 16px;
+}
+
+.ant-list-item {
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.ant-list-item-meta-title {
+  font-weight: 300;
+}
+
+.ant-tag {
+  margin-right: 8px;
+}
+
+.ant-card-head-wrapper {
+  font-size: large;
+  font-weight: 800;
+}
