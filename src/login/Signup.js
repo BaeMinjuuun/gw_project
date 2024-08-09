@@ -104,10 +104,14 @@ const Signup = () => {
       address: values.address,
       email: values.email,
       birthday: values.birthday.format("YYYY-MM-DD"),
+      department: values.department,
+      position: values.position,
     };
 
+    console.log("userData => ", userData);
+
     axios
-      .post(`${API_URL}/users/users`, userData)
+      .post(`${API_URL}/users`, userData)
       .then((result) => {
         console.log("회원가입 성공: ", result);
         message.success("회원가입이 성공적으로 완료되었습니다.");
@@ -236,6 +240,32 @@ const Signup = () => {
           {
             required: true,
             message: "이메일을 입력해주세요.",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="부서"
+        name="department"
+        rules={[
+          {
+            required: true,
+            message: "부서를 입력해주세요. ex) 개발부, 인사부",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="직급"
+        name="position"
+        rules={[
+          {
+            required: true,
+            message: "직급을 입력해주세요.",
           },
         ]}
       >

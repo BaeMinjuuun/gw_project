@@ -1,0 +1,8 @@
+.postContent {
+  min-height: 300px;
+}
+
+.postInfo > p {
+  font-size: 12px;
+  color: #737373;
+}
