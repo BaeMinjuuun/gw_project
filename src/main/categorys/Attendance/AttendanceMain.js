@@ -18,7 +18,7 @@ const AttendanceMain = () => {
       clockIn: "미등록",
       clockOut: "미등록",
     },
-  ]);
+  ]); //d
 
   useEffect(() => {
     // 사용자 정보
