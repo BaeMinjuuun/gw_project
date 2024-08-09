@@ -51,6 +51,7 @@ const Login = () => {
         onChange={(e) => setUserId(e.target.value)}
         style={{ marginBottom: "10px" }}
         onKeyDown={handleKeyDown}
+        autoCoplete="on"
       />
       <Input.Password
         placeholder="비밀번호"

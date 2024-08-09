@@ -34,23 +34,19 @@ const items2: MenuProps["items"] = [
   {
     key: "sub2",
     icon: React.createElement(LaptopOutlined),
-    label: "부서",
+    label: "예약",
     children: [
       {
         key: "5",
-        label: "Laptop",
+        label: <Link to="/conferenceRoom">회의실</Link>,
       },
       {
         key: "6",
-        label: "Mobile",
+        label: "차량",
       },
       {
         key: "7",
-        label: "Tablet",
-      },
-      {
-        key: "8",
-        label: "Accessories",
+        label: "장비",
       },
     ],
   },

@@ -7,6 +7,8 @@ import AttendanceMain from "./main/categorys/Attendance/AttendanceMain";
 import MainHome from "./main/categorys/Main/MainHome";
 import MainPostsBoard from "./main/categorys/Board/MainPostsBoard";
 import WriteBoard from "./main/categorys/Board/WriteBoard";
+import PostDetail from "./main/categorys/Board/PostDetail";
+import ConferenceRoom from "./main/categorys/Reservation/ConferenceRoom";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="/attendance" element={<AttendanceMain />} />
           <Route path="/mainPostsBoard" element={<MainPostsBoard />} />
           <Route path="/writeBoard" element={<WriteBoard />} />
+          <Route path="/postDetail/:id" element={<PostDetail />} />
+          <Route path="/conferenceRoom" element={<ConferenceRoom />} />
         </Route>
       </Routes>
     </div>

@@ -3,7 +3,6 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { Card, List, Typography, Button, Pagination } from "antd";
 import { Link } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
 import "./MainPostsBoard.css";
 import { API_URL } from "../../../config/constants";
 
@@ -28,7 +27,7 @@ const MainPostsBoard = () => {
           },
         });
         setPosts(response.data.posts);
-        console.log("response.data.posts =>", response.data.posts);
+        // console.log("response.data.posts =>", response.data.posts);
         setTotalPosts(response.data.totalPosts);
         setLoading(false);
       } catch (error) {
@@ -36,7 +35,6 @@ const MainPostsBoard = () => {
         setLoading(false);
       }
     };
-
     fetchPosts();
   }, [currentPage]);
 
@@ -52,29 +50,32 @@ const MainPostsBoard = () => {
         <Link to={"/writeBoard"}>
           <Button className="writeBtn">글쓰기</Button>
         </Link>
+
         <List
           itemLayout="horizontal"
           dataSource={posts}
           renderItem={(item, index) => (
-            <List.Item>
-              <List.Item.Meta
-                title={
-                  <Title level={4}>{`${
-                    (currentPage - 1) * postsPerPage + index + 1
-                  }. ${item.title}`}</Title>
-                }
-                description={item.content}
-              />
-              <div>
-                <p>
-                  작성자: {item.user_id} {item.User.department}
-                </p>
-                <p>
-                  작성일자:{" "}
-                  {dayjs(item.created_at).format("YYYY-MM-DD HH:mm:ss")}
-                </p>
-              </div>
-            </List.Item>
+            <Link className="postListLink" to={`/postDetail/${item.post_id}`}>
+              <List.Item>
+                <List.Item.Meta
+                  title={
+                    <Title level={4}>{`${
+                      (currentPage - 1) * postsPerPage + index + 1
+                    }. ${item.title}`}</Title>
+                  }
+                  description={item.content}
+                />
+                <div>
+                  <p>
+                    작성자: {item.user_id} {item.User.department}
+                  </p>
+                  <p>
+                    작성일자:{""}
+                    {dayjs(item.created_at).format("YYYY-MM-DD HH:mm:ss")}
+                  </p>
+                </div>
+              </List.Item>
+            </Link>
           )}
         />
       </Card>
