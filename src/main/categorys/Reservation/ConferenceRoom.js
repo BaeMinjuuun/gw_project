@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import axios from "axios";
+import { API_URL } from "../../../config/constants";
 import {
   Calendar,
   Card,
@@ -12,13 +14,32 @@ import {
   Select,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import ConferenceRoomModal from "./ConferenceRoomModal";
 // react time range Selector
 const { Option } = Select;
 
 const ConferenceRoom = () => {
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [categories, setCategories] = useState([]);
   const [form] = Form.useForm();
+  const [formData, setFormdata] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/reservationCategories/getCategories`)
+      .then((result) => {
+        setCategories(result.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  console.log("CATEGORIES => ", categories);
+  if (!categories) {
+    return <div>로딩중</div>;
+  }
 
   const onDateChange = (date) => {
     setSelectedDate(date);
@@ -34,13 +55,16 @@ const ConferenceRoom = () => {
       .then((values) => {
         console.log("Success:", values);
         setIsModalVisible(false);
+        setFormdata(values);
         form.resetFields();
+        console.log("FORMDATA => ", formData);
       })
       .catch((info) => {
         console.log("Validate Failed:", info);
       });
   };
 
+  console.log("FORMDATA => ", formData);
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -56,58 +80,22 @@ const ConferenceRoom = () => {
         }
         style={{ marginTop: "20px" }}
       >
-        <p>Room 1</p>
-        <p>Room 2</p>
-        <p>Room 3</p>
+        {categories.length > 0 ? (
+          categories.map((category) => (
+            <p key={category.category_id}>{category.category_name}</p>
+          ))
+        ) : (
+          <p>로딩중</p>
+        )}
       </Card>
 
-      <Modal
-        title="회의실 예약"
+      <ConferenceRoomModal
         visible={isModalVisible}
+        onClose={handleCancel}
         onOk={handleOk}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <Form form={form} layout="vertical" onFinish={handleOk}>
-          <Form.Item
-            name="room"
-            label="회의실 목록"
-            rules={[{ required: true, message: "회의실 선택을 해주세요." }]}
-          >
-            <Select placeholder="회의실 선택">
-              <Option value="room1">Room 1</Option>
-              <Option value="room2">Room 2</Option>
-              <Option value="room3">Room 3</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="date"
-            label="Date"
-            rules={[{ required: true, message: "날짜 선택을 해주세요." }]}
-          >
-            <DatePicker
-              defaultValue={selectedDate}
-              format="YYYY-MM-DD"
-              style={{ width: "100%" }}
-            />
-          </Form.Item>
-          <Form.Item
-            name="time"
-            label="Time"
-            rules={[{ required: true, message: "시간을 선택해주세요." }]}
-          >
-            <TimePicker.RangePicker format="HH:mm" style={{ width: "100%" }} />
-          </Form.Item>
-          <Form.Item name="purpose" label="목적">
-            <Input.TextArea rows={4} />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+        categories={categories}
+        form={form}
+      />
     </div>
   );
 };
