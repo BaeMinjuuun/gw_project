@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Progress, Table, notification } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -8,6 +9,7 @@ import "./AttendanceMain.css";
 
 const AttendanceMain = () => {
   const formattedTime = useRealTime();
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [attendance, setAttendance] = useState(null);
@@ -29,7 +31,6 @@ const AttendanceMain = () => {
 
       // 사용자 ID가 있는지 확인
       if (parsedUser.user_id) {
-        console.log("UserInfo.user_id => ", parsedUser.user_id); // 올바른 user_id 로그
         axios
           .get(`${API_URL}/attendances/getAttendance`, {
             params: { user_id: parsedUser.user_id }, // 쿼리 파라미터로 user_id 전송
@@ -39,7 +40,7 @@ const AttendanceMain = () => {
             setLoading(false);
           })
           .catch((error) => {
-            console.error("Error fetching attendance data:", error);
+            console.error("에러 :", error);
             setLoading(false);
             notification.error({
               message: "출근 기록 조회 실패",
@@ -76,8 +77,13 @@ const AttendanceMain = () => {
 
   // 출근하기 버튼 클릭 핸들러
   const handleClockIn = async () => {
-    const currentTime = getCurrentTime();
-    const currentDate = dayjs().format("YYYY-MM-DD");
+    const utc = require("dayjs/plugin/utc");
+    const timezone = require("dayjs/plugin/timezone");
+
+    dayjs.extend(utc);
+    dayjs.extend(timezone);
+    const currentTime = dayjs().tz("Asia/Seoul").format(); // Asia/Seoul 타임존으로 시간 설정
+    const currentDate = dayjs().tz("Asia/Seoul").format("YYYY-MM-DD");
 
     try {
       const response = await axios.post(`${API_URL}/attendances/clockin`, {
@@ -97,6 +103,7 @@ const AttendanceMain = () => {
           message: "출근 성공",
           description: "출근 기록이 성공적으로 저장되었습니다.",
         });
+        window.location.reload();
       }
     } catch (error) {
       console.error("출근 기록 저장에 실패했습니다.", error);
@@ -130,6 +137,7 @@ const AttendanceMain = () => {
           message: "퇴근 성공",
           description: "퇴근 기록이 성공적으로 저장되었습니다.",
         });
+        window.location.reload();
       }
     } catch (error) {
       console.error("퇴근 기록 저장에 실패했습니다.", error);

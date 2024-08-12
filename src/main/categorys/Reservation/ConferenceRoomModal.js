@@ -13,13 +13,7 @@ const { Option } = Select;
 
 const ConferenceRoomModal = ({ visible, onClose, onOk, categories, form }) => {
   return (
-    <Modal
-      title="회의실 예약"
-      visible={visible}
-      onOk={onOk}
-      onCancel={onClose}
-      footer={null}
-    >
+    <Modal title="회의실 예약" visible={visible} onOk={onOk} onCancel={onClose}>
       <Form form={form} layout="vertical" onFinish={onOk}>
         <Form.Item
           name="room"

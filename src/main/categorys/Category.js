@@ -10,7 +10,7 @@ import type { MenuProps } from "antd";
 const items2: MenuProps["items"] = [
   {
     key: "sub1",
-    icon: React.createElement(UserOutlined),
+    icon: <UserOutlined />,
     label: "사용자",
     children: [
       {
@@ -33,7 +33,7 @@ const items2: MenuProps["items"] = [
   },
   {
     key: "sub2",
-    icon: React.createElement(LaptopOutlined),
+    icon: <LaptopOutlined />,
     label: "예약",
     children: [
       {
@@ -42,7 +42,7 @@ const items2: MenuProps["items"] = [
       },
       {
         key: "6",
-        label: "차량",
+        label: <Link to="/car">차량</Link>,
       },
       {
         key: "7",
@@ -52,7 +52,7 @@ const items2: MenuProps["items"] = [
   },
   {
     key: "sub3",
-    icon: React.createElement(NotificationOutlined),
+    icon: <NotificationOutlined />,
     label: "공지사항",
     children: [
       {

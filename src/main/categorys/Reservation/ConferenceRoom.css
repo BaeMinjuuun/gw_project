@@ -1,4 +1,22 @@
-.nowDateContainer {
-  text-align: center;
-  border: solid 1px red;
+.categoryBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #e8e5e5;
+}
+
+.categoryName,
+.categoryStatus {
+  margin: 0;
+}
+
+.categoryStatus {
+  border: solid 1px #e8e5e5;
+}
+
+.reservationList {
+  font-size: 13px;
+  min-width: 400px;
+  border-bottom: solid 1px #e8e5e5;
 }

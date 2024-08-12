@@ -1,0 +1,6 @@
+.carName {
+  display: flex;
+  align-items: center; /* 수직 정렬 (기본값은 center) */
+  justify-content: space-between; /* 좌우 간격 조절 */
+  margin-bottom: 16px; /* 아래 여백 추가 (선택 사항) */
+}
