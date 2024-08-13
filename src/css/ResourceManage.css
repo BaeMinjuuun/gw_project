@@ -1,3 +1,8 @@
 .custom-column-title {
   font-size: 13px;
 }
+
+.centered-table .ant-table-thead > tr > th,
+.centered-table .ant-table-tbody > tr > td {
+  text-align: center;
+}

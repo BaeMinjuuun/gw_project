@@ -2,3 +2,8 @@
 .ant-descriptions-item {
   width: 150px;
 }
+
+.centered-table .ant-table-thead > tr > th,
+.centered-table .ant-table-tbody > tr > td {
+  text-align: center;
+}

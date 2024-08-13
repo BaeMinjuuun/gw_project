@@ -120,6 +120,7 @@ const ResourceManage = () => {
           onRow={(record) => ({
             onClick: () => handleRowClick(record), // 클릭 시 처리할 함수
           })}
+          className="centered-table"
         />
         <Button
           style={{ float: "right", marginTop: "10px" }}
@@ -135,7 +136,7 @@ const ResourceManage = () => {
         form={form}
         categories={categories}
       />
-      {selectedResource && <ResourceDetails data={selectedResource} />}
+      <ResourceDetails />
     </div>
   );
 };

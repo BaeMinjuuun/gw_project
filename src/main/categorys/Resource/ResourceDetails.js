@@ -1,27 +1,37 @@
-import { useEffect, useState } from "react";
-import { Card, Descriptions } from "antd";
+import React from "react";
+import { Card, Table } from "antd";
 import "../../../css/ResourceDetails.css";
+
 const ResourceDetails = ({ data }) => {
+  const columns = [
+    { title: "예약자", dataIndex: "resource_name", key: "resource_name" },
+    { title: "예약일자", dataIndex: "fk_category_id", key: "fk_category_id" },
+    { title: "시작시간", dataIndex: "min_value", key: "min_value" },
+    { title: "종료시간", dataIndex: "max_value", key: "max_value" },
+    { title: "목적", dataIndex: "description", key: "description" },
+  ];
+
+  const dataSource = [
+    {
+      key: 1,
+      resource_name: "data.resource_name",
+      fk_category_id: "data.fk_category_id",
+      min_value: "data.min_value",
+      max_value: "data.max_value",
+      description: "data.description",
+      image_url: "data.image_url",
+    },
+  ];
+
   return (
     <Card title="자원 세부정보" style={{ marginTop: "20px" }}>
-      <Descriptions bordered>
-        <Descriptions.Item label="자원 이름">
-          {data.resource_name}
-        </Descriptions.Item>
-        <Descriptions.Item label="분류코드">
-          {data.fk_category_id}
-        </Descriptions.Item>
-        <Descriptions.Item label="최소시간">{data.min_value}</Descriptions.Item>
-        <Descriptions.Item label="최대시간">{data.max_value}</Descriptions.Item>
-        <Descriptions.Item label="설명">{data.description}</Descriptions.Item>
-        <Descriptions.Item label="이미지">
-          <img
-            alt="자원 이미지"
-            src={data.image_url}
-            style={{ width: "100px", height: "100px", objectFit: "cover" }}
-          />
-        </Descriptions.Item>
-      </Descriptions>
+      <Table
+        columns={columns}
+        dataSource={dataSource}
+        pagination={false}
+        rowKey="key"
+        className="centered-table"
+      />
     </Card>
   );
 };
