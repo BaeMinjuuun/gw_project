@@ -81,6 +81,11 @@ const ConferenceRoom = () => {
 
       await axios.post(`${API_URL}/reservations/request`, submitData);
 
+      // 예약 성공 후 카테고리 상태 업데이트
+    await axios.patch(`${API_URL}/reservationCategories/${room}`, {
+      status: "예약됨",
+    });
+
       notification.success({
         message: "예약 성공",
         description: "회의실 예약이 성공적으로 완료되었습니다.",

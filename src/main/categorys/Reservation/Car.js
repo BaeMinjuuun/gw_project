@@ -87,7 +87,8 @@ const Car = () => {
   const reservationSubmit = async () => {
     try {
       const values = await reservationForm.validateFields();
-      console.log("form 데이터 =>", values);
+      
+      await 
 
       closeReservationModal();
     } catch (error) {

@@ -10,6 +10,7 @@ import WriteBoard from "./main/categorys/Board/WriteBoard";
 import PostDetail from "./main/categorys/Board/PostDetail";
 import ConferenceRoom from "./main/categorys/Reservation/ConferenceRoom.js";
 import Car from "./main/categorys/Reservation/Car.js";
+import ResourceManage from "./main/categorys/Resource/ResourceManage.js";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/postDetail/:id" element={<PostDetail />} />
           <Route path="/conferenceRoom" element={<ConferenceRoom />} />
           <Route path="/car" element={<Car />} />
+          <Route path="/resourceManage" element={<ResourceManage />} />
         </Route>
       </Routes>
     </div>

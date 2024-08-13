@@ -3,6 +3,7 @@ import axios from "axios";
 import { Modal, Button, Form, Input, Typography, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../../../reducer/modalSlice";
+import { setUserInfo, clearUserInfo } from "../../../reducer/userSlice";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config/constants";
 import "./ModalOpen.css";
@@ -10,12 +11,12 @@ import "./ModalOpen.css";
 const UserInformationUpdateModal = () => {
   const [form] = Form.useForm();
   const isModalOpen = useSelector((state) => state.modal.isModalOpen);
-  const [checkId, setCheckId] = useState(false); // 아이디 중복 여부 상태
-  const [isUserIdValid, setIsUserIdValid] = useState(true); // 아이디 유효성 상태
+  const user = useSelector((state) => state.user.userInfo);
+  const [checkId, setCheckId] = useState(false);
+  const [isUserIdValid, setIsUserIdValid] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
   const [fields, setFields] = useState({
     user_id: false,
     email: false,
@@ -29,11 +30,14 @@ const UserInformationUpdateModal = () => {
   const [isFormChanged, setIsFormChanged] = useState(false);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    if (user) {
+      setFormValues({
+        new_user_id: "",
+        new_email: "",
+        new_phone: "",
+      });
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const hasChanges = Object.values(formValues).some((value) => value !== "");
@@ -44,7 +48,7 @@ const UserInformationUpdateModal = () => {
     return <div>Loading...</div>;
   }
 
-  const { name, user_id, email, phone } = user;
+  const { user_id, email, phone } = user;
   const { Text } = Typography;
 
   const resetFormAndFields = () => {
@@ -87,7 +91,6 @@ const UserInformationUpdateModal = () => {
     setFormValues((prev) => ({ ...prev, ...changedValues }));
   };
 
-  // 아이디 중복 검사
   const checkUserId = (userId) => {
     axios
       .post(`${API_URL}/users/check-user-id`, { user_id: userId })
@@ -105,7 +108,6 @@ const UserInformationUpdateModal = () => {
       });
   };
 
-  // 중복 검사 버튼 핸들러
   const handleCheckUserId = () => {
     const userId = form.getFieldValue("new_user_id");
     if (userId) {
@@ -123,7 +125,6 @@ const UserInformationUpdateModal = () => {
     try {
       const { new_user_id } = values;
 
-      // 아이디를 변경하려는 경우
       if (fields.user_id && new_user_id) {
         const response = await fetch(`${API_URL}/users/updateUserId`, {
           method: "POST",
@@ -136,8 +137,18 @@ const UserInformationUpdateModal = () => {
         const result = await response.json();
 
         if (response.ok) {
-          console.log("Update successful:", result);
-          window.location.href = "/";
+          dispatch(setUserInfo({ ...user, user_id: new_user_id }));
+          message.success({
+            content: (
+              <div>
+                아이디 변경이 완료되었습니다.
+                <br />
+                새로고침을 해주세요.
+              </div>
+            ),
+            duration: 3,
+          });
+          navigate("/");
         } else {
           console.error("Update failed:", result);
         }
@@ -145,18 +156,6 @@ const UserInformationUpdateModal = () => {
 
       resetFormAndFields();
       dispatch(closeModal());
-      message.success({
-        content: (
-          <div>
-            아이디 변경이 완료되었습니다.
-            <br />
-            새로고침을 해주세요.
-          </div>
-        ),
-        duration: 3,
-      });
-      localStorage.removeItem("user");
-      navigate("/");
     } catch (error) {
       console.error("Error:", error);
       message.error(`에러가 발생했습니다. ${error.message}`);

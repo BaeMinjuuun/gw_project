@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setUserInfo, setStatus, setError } from "../reducer/userSlice";
 import { Input, Button, message } from "antd";
 import axios from "axios";
 import { API_URL } from "../config/constants";
@@ -7,12 +9,15 @@ import "./Login.css";
 const Login = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
     if (!userId || !password) {
       message.error("아이디와 비밀번호를 입력해 주세요.");
       return;
     }
+
+    dispatch(setStatus("loading")); // 상태 업데이트
 
     // 로그인 요청
     axios
@@ -25,6 +30,10 @@ const Login = () => {
         // 로컬 스토리지에 저장
         localStorage.setItem("token", token); // JWT 토큰 저장
         localStorage.setItem("user", JSON.stringify(user)); // 사용자 정보 저장
+
+        // 유저 정보를 Redux 스토어에 저장
+        dispatch(setUserInfo(user));
+
         window.location.href = "/mainHome";
       })
       .catch((error) => {
@@ -33,6 +42,9 @@ const Login = () => {
           "로그인 실패: ",
           error.response?.data?.message || error.message
         );
+      })
+      .finally(() => {
+        dispatch(setStatus("idle")); // 상태 업데이트
       });
   };
 

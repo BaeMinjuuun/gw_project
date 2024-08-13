@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Breadcrumb, Layout, Menu, theme, Button, message, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import "./MainPage.css";
 import items1 from "./navBars/NavBar";
-import items2 from "./categorys/Category";
-import AttendanceMain from "./categorys/Attendance/AttendanceMain";
+import Category from "./categorys/Category";
+import { useSelector, useDispatch } from "react-redux";
+import { clearUserInfo } from "../reducer/userSlice";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -14,20 +15,13 @@ const MainPage = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const [user, setUser] = useState(null);
+  const user = useSelector((state) => state.user.userInfo);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
 
   // 로그아웃
   const handleLogout = () => {
-    localStorage.removeItem("user"); // 로컬 스토리지에서 사용자 정보 삭제
-    setUser(null);
+    dispatch(clearUserInfo()); // 리덕스 상태에서 사용자 정보 제거
     message.success("로그아웃 되었습니다.");
     navigate("/");
   };
@@ -82,13 +76,7 @@ const MainPage = () => {
           }}
         >
           <Sider style={{ background: colorBgContainer }} width={200}>
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={["1"]}
-              defaultOpenKeys={["sub1"]}
-              style={{ height: "100%" }}
-              items={items2}
-            />
+            <Category user={user} />
           </Sider>
           <Content id="content" style={{ padding: "0 24px", minHeight: 280 }}>
             <Outlet />
