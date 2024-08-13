@@ -2,7 +2,7 @@ import React from "react";
 import { Breadcrumb, Layout, Menu, theme, Button, message, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import "./MainPage.css";
+import "../css/MainPage.css";
 import items1 from "./navBars/NavBar";
 import Category from "./categorys/Category";
 import { useSelector, useDispatch } from "react-redux";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Button } from "antd";
-import "./Profile.css";
+import "../../../css/Profile.css";
 import ModalOpen, { showModal } from "./UserInformationUpdateModal";
 import { openModal } from "../../../reducer/modalSlice";
 import { useSelector, useDispatch } from "react-redux";

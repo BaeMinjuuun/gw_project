@@ -4,7 +4,7 @@ import { setUserInfo, setStatus, setError } from "../reducer/userSlice";
 import { Input, Button, message } from "antd";
 import axios from "axios";
 import { API_URL } from "../config/constants";
-import "./Login.css";
+import "../css/Login.css";
 
 const Login = () => {
   const [userId, setUserId] = useState("");

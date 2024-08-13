@@ -6,7 +6,7 @@ import { closeModal } from "../../../reducer/modalSlice";
 import { setUserInfo, clearUserInfo } from "../../../reducer/userSlice";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config/constants";
-import "./ModalOpen.css";
+import "../../../css/ModalOpen.css";
 
 const UserInformationUpdateModal = () => {
   const [form] = Form.useForm();

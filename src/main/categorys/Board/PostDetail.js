@@ -4,7 +4,7 @@ import { Card, Button } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
 import { API_URL } from "../../../config/constants";
-import "./PostDetail.css";
+import "../../../css/PostDetail.css";
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -39,7 +39,9 @@ const PostDetail = () => {
             <span>{post.content}</span>
           </div>
           <div className="postInfo">
-            <p>작성자 : {post.User.department}/{post.user_id}</p>
+            <p>
+              작성자 : {post.User.department}/{post.user_id}
+            </p>
             <p>
               작성일자: {dayjs(post.created_at).format("YYYY-MM-DD HH:mm:ss")}
             </p>

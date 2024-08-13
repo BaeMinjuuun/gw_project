@@ -4,7 +4,7 @@ import { API_URL } from "../../../config/constants";
 import { Card, Button, Form, notification } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import ConferenceRoomModal from "./ConferenceRoomModal";
-import "./ConferenceRoom.css";
+import "../../../css/ConferenceRoom.css";
 
 const ConferenceRoom = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -82,9 +82,9 @@ const ConferenceRoom = () => {
       await axios.post(`${API_URL}/reservations/request`, submitData);
 
       // 예약 성공 후 카테고리 상태 업데이트
-    await axios.patch(`${API_URL}/reservationCategories/${room}`, {
-      status: "예약됨",
-    });
+      await axios.patch(`${API_URL}/reservationCategories/${room}`, {
+        status: "예약됨",
+      });
 
       notification.success({
         message: "예약 성공",

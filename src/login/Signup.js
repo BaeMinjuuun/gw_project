@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Form, Input, message, Button, Modal, DatePicker } from "antd";
 import axios from "axios";
 import { API_URL } from "../config/constants";
-import "./Signup.css";
+import "../css/Signup.css";
 import DaumPostCode from "../util/DaumPostCode";
 import { formatPhoneNumber } from "../util/formatPhoneNumber";
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Modal, Form, Input, DatePicker, Select, TimePicker } from "antd";
-import "./CarReservationModal.css";
+import "../../../css/CarReservationModal.css";
 
 const { Option } = Select;
 

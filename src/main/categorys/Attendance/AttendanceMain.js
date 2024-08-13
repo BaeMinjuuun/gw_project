@@ -5,7 +5,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import useRealTime from "../../../util/useRealTime";
 import { API_URL } from "../../../config/constants";
-import "./AttendanceMain.css";
+import "../../../css/AttendanceMain.css";
 
 const AttendanceMain = () => {
   const formattedTime = useRealTime();

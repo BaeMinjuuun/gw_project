@@ -1,6 +1,6 @@
 // src/components/MainHome.js
 import React from "react";
-import "./MainHome.css";
+import "../../../css/MainHome.css";
 import { Card } from "antd";
 import Board from "../Board/RecentPostsBoard";
 
