@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Card, Button } from "antd";
-import axios from "axios";
-import dayjs from "dayjs";
-import { API_URL } from "../../../config/constants";
-import "./PostDetail.css";
+import { Card } from "antd";
+import "../../../css/PostDetail.css";
 
 const PostUpdate = () => {
   const { id } = useParams();

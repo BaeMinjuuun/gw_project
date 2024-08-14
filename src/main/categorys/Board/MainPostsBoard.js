@@ -3,7 +3,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { Card, List, Typography, Button, Pagination } from "antd";
 import { Link } from "react-router-dom";
-import "./MainPostsBoard.css";
+import "../../../css/MainPostsBoard.css";
 import { API_URL } from "../../../config/constants";
 
 const { Title } = Typography;

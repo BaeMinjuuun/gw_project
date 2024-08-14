@@ -18,6 +18,7 @@ const AddRegisterModal = ({ visible, onClose, onSubmit, form, categories }) => {
       .then((response) => {
         console.log(response.data);
         onSubmit(values);
+        window.location.href("/");
       })
       .catch((error) => {
         console.error(error);
