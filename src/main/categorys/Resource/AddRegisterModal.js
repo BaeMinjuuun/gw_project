@@ -11,14 +11,31 @@ const AddRegisterModal = ({ visible, onClose, onSubmit, form, categories }) => {
   const [maxValueOptions, setMaxValueOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [originalFilename, setOriginalFilename] = useState("");
+  const [fileList, setFileList] = useState([]);
 
   const onFinish = (values) => {
+    const formData = new FormData();
+
+    formData.append("fk_category_id", values.fk_category_id);
+    formData.append("resource_name", values.resource_name);
+    formData.append("min_value", values.min_value);
+    formData.append("max_value", values.max_value);
+    formData.append("description", values.description);
+    formData.append("image_original_filename", originalFilename);
+
+    if (fileList.length > 0) {
+      formData.append("image_url", fileList[0]); // 첫 번째 파일을 전송
+    }
     axios
-      .post(`${API_URL}/resourceRegisters/upload`, values)
+      .post(`${API_URL}/resourceRegisters/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
-        console.log(response.data);
         onSubmit(values);
-        window.location.href("/");
+        // window.location.href = "/";
       })
       .catch((error) => {
         console.error(error);
@@ -58,9 +75,30 @@ const AddRegisterModal = ({ visible, onClose, onSubmit, form, categories }) => {
     }
   }, [categories]);
 
+  const handleFileChange = ({ fileList }) => {
+    const files = fileList.map((file) => file.originFileObj || file);
+    setFileList(files);
+
+    // 원본 파일명 저장
+    if (files.length > 0) {
+      setOriginalFilename(files[0].name);
+    } else {
+      setOriginalFilename("");
+    }
+
+    // 미리보기 URL 설정
+    if (files.length > 0) {
+      const objectUrl = URL.createObjectURL(files[0]);
+      setImagePreviewUrl(objectUrl);
+    } else {
+      setImagePreviewUrl("");
+    }
+  };
+
   const handleChange = (info) => {
     if (info.fileList.length > 0) {
       const file = info.fileList[0].originFileObj;
+      console.log("FILE => ", file);
       const objectUrl = URL.createObjectURL(file);
       setImagePreviewUrl(objectUrl); // 미리보기 URL 설정
     } else {
@@ -147,7 +185,8 @@ const AddRegisterModal = ({ visible, onClose, onSubmit, form, categories }) => {
           <Upload
             listType="picture"
             showUploadList={false}
-            onChange={handleChange} // 이미지 변경 시 호출되는 핸들러
+            beforeUpload={() => false}
+            onChange={handleFileChange} // 이미지 변경 시 호출되는 핸들러
           >
             <Button icon={<UploadOutlined />}>업로드</Button>
           </Upload>

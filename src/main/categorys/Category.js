@@ -1,4 +1,5 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import {
   UserOutlined,
@@ -7,8 +8,33 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
+import { API_URL } from "../../config/constants";
 
 const Category = ({ user }) => {
+  const [category, setCategory] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/resourceCategories/getCategories`)
+      .then((result) => {
+        setCategory(result.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  if (!category) {
+    return <div>로딩중</div>;
+  }
+
+  const categoryItems = category.map((item) => ({
+    key: item.category_id,
+    label: (
+      <Link to={`/resourcePage/${item.category_id}`}>{item.category_name}</Link>
+    ),
+  }));
+
   const Items = [
     {
       key: "sub1",
@@ -50,20 +76,7 @@ const Category = ({ user }) => {
           )}
         </div>
       ),
-      children: [
-        {
-          key: "5",
-          label: <Link to="/conferenceRoom">회의실</Link>,
-        },
-        {
-          key: "6",
-          label: <Link to="/car">차량</Link>,
-        },
-        {
-          key: "7",
-          label: "장비",
-        },
-      ],
+      children: categoryItems,
     },
     {
       key: "sub3",

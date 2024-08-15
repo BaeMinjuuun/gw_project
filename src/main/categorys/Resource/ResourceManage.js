@@ -73,12 +73,17 @@ const ResourceManage = () => {
       dataIndex: "description",
       key: "description",
     },
+    // 이미지 안뜨는 이유 = 현재 파일이 나눠져 있기 때문에 합치면 보일것으로 예상
     {
       title: "이미지",
       dataIndex: "image_url",
       key: "image_url",
-      render: () => (
-        <img alt="자원 이미지" style={{ width: "50px", height: "50px" }} />
+      render: (imageUrl) => (
+        <img
+          alt="자원 이미지"
+          src={`${API_URL}/images/${imageUrl}`} // `imageUrl`을 사용하여 이미지 경로를 설정
+          style={{ width: "50px", height: "50px", objectFit: "cover" }}
+        />
       ),
     },
     {
@@ -177,7 +182,6 @@ const ResourceManage = () => {
       },
       onCancel() {
         console.log("Cancelled");
-        // 여기에 취소 후 실행할 작업을 넣습니다.
       },
     });
   };
