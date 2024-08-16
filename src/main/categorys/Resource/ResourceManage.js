@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, Table, Button, Form, message, Modal } from "antd";
-import { PlusOutlined, EditOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { API_URL } from "../../../config/constants";
 import AddRegisterModal from "./AddRegisterModal";
@@ -81,7 +81,7 @@ const ResourceManage = () => {
       render: (imageUrl) => (
         <img
           alt="자원 이미지"
-          src={`${API_URL}/images/${imageUrl}`} // `imageUrl`을 사용하여 이미지 경로를 설정
+          src={`${API_URL}/images/20240815103116.jpg`} // `imageUrl`을 사용하여 이미지 경로를 설정
           style={{ width: "50px", height: "50px", objectFit: "cover" }}
         />
       ),
@@ -140,7 +140,6 @@ const ResourceManage = () => {
     setModalState({ ...modalState, [modalType]: false });
   };
   const handleSubmit = async (modalType) => {
-    const values = await form.validateFields();
     setModalState({ ...modalState, [modalType]: false });
   };
 
