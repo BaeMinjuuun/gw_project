@@ -1,9 +1,10 @@
 .attendanceContainer {
   background-color: #a4d2fc;
   max-width: 250px;
-  min-height: 400px;
+  max-height: 350px;
   margin-top: 20px;
   border-radius: 3%;
+  display: flex;
 }
 
 .contents {
@@ -35,7 +36,7 @@
 
 .buttonContainer {
   display: flex;
-  margin-top: 110px;
+  margin-top: 30px;
   justify-content: space-between;
   width: 100%;
   max-height: 100px;
@@ -50,4 +51,10 @@
   background-color: #1890ff;
   color: white;
   font-size: 16px;
+}
+
+.calendarContainer {
+  margin-left: 50px;
+  height: 420px;
+  min-width: 800px;
 }

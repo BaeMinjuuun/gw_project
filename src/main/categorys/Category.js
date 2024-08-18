@@ -53,10 +53,6 @@ const Category = ({ user }) => {
           key: "3",
           label: <Link to="/mainPostsBoard">게시판</Link>,
         },
-        {
-          key: "4",
-          label: "Privacy",
-        },
       ],
     },
     {

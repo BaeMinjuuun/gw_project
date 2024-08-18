@@ -12,9 +12,10 @@ const ResourcePage = () => {
   const { id } = useParams(); // URL에서 category_id 추출
   const [categoryInfo, setCategoryInfo] = useState({}); // 대카테고리
   const [categoryNames, setCategoryNames] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false); // 모달 표시 여부
+  const [resModalVisible, setResModalVisible] = useState(false); // 예약 모달 표시 여부
   const [registers, setRegisters] = useState([]); // 리소스 등록 데이터 저장
   const [resources, setResources] = useState([]); // 모든 리소스 저장
+
   const userInfo = useSelector((state) => state.user.userInfo);
 
   useEffect(() => {
@@ -71,6 +72,12 @@ const ResourcePage = () => {
 
   const columns = [
     {
+      title: "No",
+      dataIndex: "No",
+      key: "No",
+      render: (text, record, index) => index + 1,
+    },
+    {
       title: "예약자ID",
       dataIndex: "fk_user_id",
       key: "fk_user_id",
@@ -96,12 +103,11 @@ const ResourcePage = () => {
       key: "purpose",
     },
     {
-      title: "삭제",
+      title: "기타",
       key: "delete",
       render: (text, record) =>
         userInfo && userInfo.user_id === record.fk_user_id ? (
           <>
-            <Button size="small">수정</Button>
             <Button
               size="small"
               style={{ marginLeft: "5px" }}
@@ -136,11 +142,11 @@ const ResourcePage = () => {
 
   // 예약모달 열기
   const handleModalOpen = () => {
-    setIsModalVisible(true);
+    setResModalVisible(true);
   };
 
   const handleModalClose = () => {
-    setIsModalVisible(false);
+    setResModalVisible(false);
   };
 
   return (
@@ -165,7 +171,9 @@ const ResourcePage = () => {
                   dataSource={registers.filter(
                     (reg) => reg.fk_resource_id === resource.resource_id
                   )}
-                  pagination={false}
+                  pagination={{
+                    pageSize: 5,
+                  }}
                   columns={columns}
                   className="centered-table"
                 ></Table>
@@ -173,9 +181,9 @@ const ResourcePage = () => {
             ))
           : null}
       </Card>
-      {isModalVisible && (
+      {resModalVisible && (
         <BookingModal
-          visible={isModalVisible}
+          visible={resModalVisible}
           onClose={handleModalClose}
           resources={resources}
           id={id}

@@ -5,6 +5,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import useRealTime from "../../../util/useRealTime";
 import { API_URL } from "../../../config/constants";
+import MyAttendance from "./MyAttendance";
 import "../../../css/AttendanceMain.css";
 
 const AttendanceMain = () => {
@@ -208,6 +209,9 @@ const AttendanceMain = () => {
             퇴근하기
           </Button>
         </div>
+      </div>
+      <div className="calendarContainer">
+        <MyAttendance className="calendarContainer" />
       </div>
     </div>
   );

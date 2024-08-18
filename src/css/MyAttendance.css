@@ -1,0 +1,9 @@
+.monthContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.myAttendanceTable .ant-table-cell {
+  text-align: center;
+}

@@ -73,6 +73,7 @@ const MainPage = () => {
             padding: "24px 0",
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
+            minHeight: "500px",
           }}
         >
           <Sider style={{ background: colorBgContainer }} width={200}>
