@@ -38,7 +38,7 @@ const Profile = () => {
 
   return (
     <div className="tableContainer">
-      <h1>님의 프로필</h1>
+      <h1>{userInfo.name}님의 프로필</h1>
       <Table
         columns={columns}
         dataSource={data}

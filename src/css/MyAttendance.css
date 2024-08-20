@@ -7,3 +7,22 @@
 .myAttendanceTable .ant-table-cell {
   text-align: center;
 }
+.ant-card {
+  text-align: center;
+}
+
+.ant-card-body h2 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.totalContainer {
+  display: flex;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 20px;
+}
+
+.card {
+  height: 150px;
+}

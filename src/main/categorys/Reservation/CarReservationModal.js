@@ -27,7 +27,6 @@ const CarReservationModal = ({
   if (!data) {
     return <div>로딩중</div>;
   }
-  console.log("data => ", data);
   if (!user) {
     return <div>로딩중</div>;
   }

@@ -1,181 +1,175 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Collapse, DatePicker } from "antd";
+import { Button, Collapse, Table, Card } from "antd";
+import axios from "axios";
 import moment from "moment";
 import "moment/locale/ko";
 import { useSelector } from "react-redux";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import axios from "axios"; // axios import 추가
-import { API_URL } from "../../../config/constants";
 import "../../../css/MyAttendance.css";
+import "antd/dist/reset.css";
+import { API_URL } from "../../../config/constants";
 
 const { Panel } = Collapse;
-const { MonthPicker } = DatePicker;
 
 moment.locale("ko");
 
-const AttendanceTracker = () => {
-  const [weeklyData, setWeeklyData] = useState({});
-  const [currentDate, setCurrentDate] = useState(moment());
-  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+const MyAttendance = () => {
+  const [thisMonth, setThisMonth] = useState(moment().format("YYYY-MM"));
+  const [attendanceData, setAttendanceData] = useState([]);
 
   const userInfo = useSelector((state) => state.user.userInfo);
-
-  // 주차별 데이터 가져오기
-  const fetchWeeklyData = async () => {
-    const startOfMonth = currentDate
-      .clone()
-      .startOf("month")
-      .format("YYYY-MM-DD");
-    const endOfMonth = currentDate.clone().endOf("month").format("YYYY-MM-DD");
-    const user_id = userInfo.user_id;
-
-    console.log("startOfMonth => ", startOfMonth);
-    console.log("endOfMonth => ", endOfMonth);
-    console.log("user_id => ", user_id);
-
-    try {
-      // axios를 사용하여 API 호출
-      const response = await axios.get(`${API_URL}/attendances/getMyRecord`, {
-        params: {
-          user_id: user_id,
-          start_date: startOfMonth,
-          end_date: endOfMonth,
-        },
-      });
-
-      const data = response.data;
-
-      // 데이터 확인
-      console.log("data => ", data);
-
-      // 데이터가 객체일 때, 배열로 변환
-      const entries = Object.values(data).flat();
-      console.log("entries => ", entries);
-
-      // 데이터가 배열인지 확인
-      if (!Array.isArray(entries)) {
-        console.error("에러내용 :", entries);
-        return;
-      }
-
-      // 주차별 데이터 가공
-      const groupedData = entries.reduce((acc, entry) => {
-        const weekNumber = moment(entry.date).week();
-        const weekKey = `week${weekNumber}`;
-        if (!acc[weekKey]) acc[weekKey] = [];
-        acc[weekKey].push({
-          id: entry.id,
-          user_id: entry.user_id,
-          date: moment(entry.date).format("YYYY-MM-DD (dd)"),
-          check_in_time: entry.check_in_time,
-          check_out_time: entry.check_out_time,
-          total_hours: calculateHours(
-            entry.check_in_time,
-            entry.check_out_time
-          ),
-        });
-        return acc;
-      }, {});
-
-      console.log("groupedData => ", groupedData);
-
-      setWeeklyData(groupedData);
-    } catch (error) {
-      console.error("에러내용 :", error);
-    }
-  };
+  const user_id = userInfo.user_id;
 
   useEffect(() => {
-    fetchWeeklyData();
-  }, [currentDate, userInfo.user_id]);
+    const fetchAttendanceData = async () => {
+      console.log("THISMONTH => ", thisMonth);
+      try {
+        const response = await axios.get(
+          `${API_URL}/attendances/getAttendancesByMonth`,
+          {
+            params: { user_id: user_id, thisMonth: thisMonth },
+          }
+        );
+        setAttendanceData(response.data);
+        console.log("ATTENDANCEDATA => ", response.data);
+      } catch (error) {
+        console.error("근무 내역을 가져오는 데 오류가 발생했습니다.", error);
+      }
+    };
 
-  const handlePrevMonth = () => {
-    setCurrentDate(currentDate.clone().subtract(1, "months"));
+    fetchAttendanceData();
+  }, [thisMonth]);
+
+  const handleMonthChange = (months) => {
+    const newMonth = moment(thisMonth).add(months, "months").format("YYYY-MM");
+    setThisMonth(newMonth);
   };
 
-  const handleNextMonth = () => {
-    setCurrentDate(currentDate.clone().add(1, "months"));
+  // 주차별 데이터 그룹화
+  const groupedData = attendanceData.reduce((acc, record) => {
+    const weekOfMonth =
+      moment(record.date).week() -
+      moment(record.date).startOf("month").week() +
+      1;
+    if (!acc[weekOfMonth]) {
+      acc[weekOfMonth] = [];
+    }
+    acc[weekOfMonth].push(record);
+    return acc;
+  }, {});
+
+  // 시간 포맷팅 함수
+  const formatTime = (dateTime) => {
+    if (!dateTime) return "N/A";
+    return moment(dateTime).format("HH:mm:ss");
   };
 
-  const handleDateChange = (date) => {
-    setCurrentDate(date);
-    setIsDatePickerVisible(false);
+  // 날짜와 요일 포맷팅 함수
+  const formatDateWithDay = (date) => {
+    if (!date) return "N/A";
+    return moment(date).format("YYYY-MM-DD (ddd)"); // 일자 (요일) 형식으로 포맷
   };
 
-  // 시간 계산 함수
-  const calculateHours = (checkInTime, checkOutTime) => {
-    const format = "HH:mm";
-    const checkIn = moment(checkInTime, format);
-    const checkOut = moment(checkOutTime, format);
+  // 하루의 근무 시간을 계산하는 함수
+  const calculateWorkHours = (checkInTime, checkOutTime) => {
+    if (!checkInTime || !checkOutTime) return 0;
+    const checkIn = moment(checkInTime);
+    const checkOut = moment(checkOutTime);
     const duration = moment.duration(checkOut.diff(checkIn));
-    return duration.asHours().toFixed(1); // 소수점 1자리까지
+    return duration.asHours();
   };
 
-  // 테이블 컬럼 정의
-  const columns = [
-    { title: "일자", dataIndex: "date", key: "date", align: "center" },
-    {
-      title: "업무시작",
-      dataIndex: "check_in_time",
-      key: "check_in_time",
-      align: "center",
-    },
-    {
-      title: "업무종료",
-      dataIndex: "check_out_time",
-      key: "check_out_time",
-      align: "center",
-    },
-    {
-      title: "총근무시간",
-      dataIndex: "total_hours",
-      key: "total_hours",
-      align: "center",
-    },
-    { title: "기타", dataIndex: "", key: "", align: "center" },
-  ];
+  // 패널
+  const renderPanels = () => {
+    const totalWeeks = 5;
+    let panels = [];
+    for (let week = 1; week <= totalWeeks; week++) {
+      panels.push(
+        <Panel header={`Week ${week}`} key={week}>
+          <Table
+            dataSource={groupedData[week] || []}
+            pagination={false}
+            rowKey="id"
+            columns={[
+              {
+                title: "일자",
+                dataIndex: "date",
+                key: "date",
+                align: "center",
+                render: formatDateWithDay,
+              },
+              {
+                title: "출근 시간",
+                dataIndex: "check_in_time",
+                key: "check_in_time",
+                align: "center",
+                render: formatTime,
+              },
+              {
+                title: "퇴근 시간",
+                dataIndex: "check_out_time",
+                key: "check_out_time",
+                align: "center",
+                render: formatTime,
+              },
+              {
+                title: "누적 시간",
+                dataIndex: "total_time",
+                key: "total_time",
+                align: "center",
+              },
+            ]}
+          />
+        </Panel>
+      );
+    }
+    return panels;
+  };
+
+  // 예시 데이터 (주 및 월 통계)
+  const data = {
+    weekTotal: "12:30",
+    weekOvertime: "03:45",
+    weekRemaining: "00:00",
+    monthTotal: "50:00",
+    monthOvertime: "15:00",
+  };
 
   return (
     <div className="myAttendanceListContainer">
+      <div className="totalContainer">
+        <Card title="이번주 누적" bordered={false}>
+          <h2>{data.weekTotal}</h2>
+        </Card>
+        <Card title="이번주 초과" bordered={false}>
+          <h2>{data.weekOvertime}</h2>
+        </Card>
+        <Card title="이번주 잔여" bordered={false}>
+          <h2>{data.weekRemaining}</h2>
+        </Card>
+        <Card title="이번달 누적" bordered={false}>
+          <h2>{data.monthTotal}</h2>
+        </Card>
+        <Card title="이번달 연장" bordered={false}>
+          <h2>{data.monthOvertime}</h2>
+        </Card>
+      </div>
       <div className="monthContainer">
-        <Button size="small" onClick={handlePrevMonth}>
+        <Button size="small" onClick={() => handleMonthChange(-1)}>
           <LeftOutlined />
         </Button>
         <div className="dateSpan">
-          <span onClick={() => setIsDatePickerVisible(true)}>
-            {currentDate.format("YYYY-MM")}
-          </span>
+          <span>{thisMonth}</span>
         </div>
-        {isDatePickerVisible && (
-          <MonthPicker
-            defaultValue={currentDate}
-            onChange={handleDateChange}
-            open={true}
-            onOpenChange={(open) => setIsDatePickerVisible(open)}
-            style={{ position: "absolute", zIndex: 1000 }}
-          />
-        )}
-        <Button size="small" onClick={handleNextMonth}>
+        <Button size="small" onClick={() => handleMonthChange(1)}>
           <RightOutlined />
         </Button>
       </div>
       <div style={{ marginTop: "10px" }}>
-        <Collapse>
-          {Object.keys(weeklyData).map((week, index) => (
-            <Panel header={`${index + 1}주차`} key={week}>
-              <Table
-                dataSource={weeklyData[week]}
-                columns={columns}
-                pagination={false}
-                rowKey="id"
-                className="myAttendanceTable"
-              />
-            </Panel>
-          ))}
-        </Collapse>
+        <Collapse>{renderPanels()}</Collapse>
       </div>
     </div>
   );
 };
 
-export default AttendanceTracker;
+export default MyAttendance;

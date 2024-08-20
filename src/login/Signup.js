@@ -108,8 +108,6 @@ const Signup = () => {
       position: values.position,
     };
 
-    console.log("userData => ", userData);
-
     axios
       .post(`${API_URL}/users`, userData)
       .then((result) => {
