@@ -45,7 +45,7 @@ const MainPostsBoard = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>에러발생! 에러내용: {error.message}</p>;
   return (
-    <div>
+    <div className="boardContainer">
       <Card title="사내 게시판" bordered={true}>
         <Link to={"/writeBoard"}>
           <Button className="writeBtn">글쓰기</Button>

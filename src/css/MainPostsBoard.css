@@ -22,3 +22,11 @@
   font-size: large;
   font-weight: 800;
 }
+
+.ant-card-body {
+  text-align: left;
+}
+
+.boardContainer .ant-list-item-meta {
+  text-align: left;
+}

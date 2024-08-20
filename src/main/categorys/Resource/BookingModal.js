@@ -36,9 +36,13 @@ const BookingModal = ({ visible, onClose, resources }) => {
 
   const handleFormSubmit = (values) => {
     const [startMoment, endMoment] = values.timeValues;
+    console.log("startMoment => ", startMoment);
+    console.log("endMoment => ", endMoment);
 
     const formattedStartTime = startMoment.format("YYYY-MM-DD HH:mm:ss");
     const formattedEndTime = endMoment.format("YYYY-MM-DD HH:mm:ss");
+    console.log("formattedStartTime => ", formattedStartTime);
+    console.log("formattedEndTime => ", formattedEndTime);
 
     const submitData = {
       fk_resource_id: values.fk_resource_id,

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import dayjs from "dayjs";
 import { useParams } from "react-router-dom";
 import { Card, Button, Table, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -38,16 +39,8 @@ const ResourcePage = () => {
             const formattedData = registerData.map((reg) => ({
               ...reg,
               date: reg.start_time.substring(0, 10),
-              start_time: reg.start_time
-                .split("T")[1]
-                .split(":")
-                .slice(0, 2)
-                .join(":"),
-              end_time: reg.end_time
-                .split("T")[1]
-                .split(":")
-                .slice(0, 2)
-                .join(":"),
+              start_time: dayjs(reg.start_time).format("HH:mm"),
+              end_time: dayjs(reg.end_time).format("HH:mm"),
             }));
             setRegisters(formattedData);
           })
@@ -149,10 +142,18 @@ const ResourcePage = () => {
     setResModalVisible(false);
   };
 
+  console.log("registers => ", registers);
+  const paginationConfig =
+    registers.length > 5
+      ? {
+          position: ["bottomCenter"],
+        }
+      : false;
+
   return (
     <div style={{ padding: "30px" }}>
       <Card
-        style={{ marginBottom: "20px" }}
+        style={{ marginBottom: "20px", textAlign: "left" }}
         title={categoryInfo.category_name}
         extra={
           <Button
@@ -166,14 +167,16 @@ const ResourcePage = () => {
       >
         {categoryNames.length > 0
           ? categoryNames.map((resource) => (
-              <Card key={resource.resource_id} title={resource.resource_name}>
+              <Card
+                key={resource.resource_id}
+                title={resource.resource_name}
+                style={{ textAlign: "left" }}
+              >
                 <Table
                   dataSource={registers.filter(
                     (reg) => reg.fk_resource_id === resource.resource_id
                   )}
-                  pagination={{
-                    pageSize: 5,
-                  }}
+                  pagination={paginationConfig}
                   columns={columns}
                   className="centered-table"
                 ></Table>
